@@ -1,17 +1,93 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-// const bcrypt = require("bcrypt");
+// const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
 
-    username:{
+    firstName:{
         type: String,
-        required:[true, "Username is required"]
+        required:[true, "First name is required"]
+    },
+    lastName:{
+        type: String,
+        required:[true, "Last name is required"]
     },
 
     email: {
         type: String,
         required: [true, "Email address is required"]
+    },
+
+    address: {
+        type: String,
+        required: [true, "Address is required"]
+    },
+
+    city: {
+        type: String,
+        required: [true, "City is required"]
+    },
+
+    state: {
+        type: String,
+        required: [true, "State must be supplied"],
+        enum: [
+            "AK",
+            "AL",
+            "AR",
+            "AS",
+            "AZ",
+            "CA",
+            "CO",
+            "CT",
+            "DC",
+            "DE",
+            "FL",
+            "GA",
+            "GU",
+            "HI",
+            "IA",
+            "ID",
+            "IL",
+            "IN",
+            "KS",
+            "KY",
+            "LA",
+            "MA",
+            "MD",
+            "ME",
+            "MI",
+            "MN",
+            "MO",
+            "MS",
+            "MT",
+            "NC",
+            "ND",
+            "NE",
+            "NH",
+            "NJ",
+            "NM",
+            "NV",
+            "NY",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "PR",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VA",
+            "VI",
+            "VT",
+            "WA",
+            "WI",
+            "WV",
+            "WY"
+        ]
     },
     
     password:{

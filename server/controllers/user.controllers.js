@@ -2,6 +2,7 @@ const User = require("../models/user.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
 module.exports = {
 
     register: (req, res)=>{
@@ -59,7 +60,8 @@ module.exports = {
                     )
                     .json({
                         message:"Successfully Logged in",
-                        userLoggedIn: userRecord.username
+                        // userLoggedIn: userRecord.username
+                        userLoggedIn: userRecord.firstName
                     })
                 }
                 
