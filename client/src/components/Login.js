@@ -5,6 +5,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import { Link } from "@reach/router";
+import Container from "react-bootstrap/esm/Container";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -38,33 +41,47 @@ const Login = () => {
 
     return (
         <div>
-        <h2>Login</h2>
-        <p className="error-text" style={{color:"red"}}>{errorMessage ? errorMessage : ""}</p>
-        <form onSubmit={login}>
-            <div>
-            <label>Email</label>
-            <input
-                type="text"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            </div>
-            <div>
-            <label>Password</label>
-            <input 
-                type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            </div>
-            <div className="center">
-            <button 
-                type="submit"
-            >Sign In</button>
-            </div>
-        </form>
+            <Nav className="justify-content-end" >
+                <Nav.Item>
+                    <Nav.Link ><Link to="/Register">Don't Have an Account? Register</Link></Nav.Link>
+                </Nav.Item>
+            </Nav>
+
+            <h2>Welcome Back!</h2>
+            <p className="error-text" style={{color:"red"}}>{errorMessage ? errorMessage : ""}</p>
+
+            <Container>
+                <Row>
+                    <Col>
+                        <Form onSubmit={login}>
+                            <Form.Group>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            </Form.Group>
+                            <Form.Group>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control 
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            </Form.Group>
+                            <div className="center">
+                            <Button type="submit" variant="primary" size="lg">Log In</Button>
+                            </div>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
+        
         </div>
     );
 };

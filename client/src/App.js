@@ -5,17 +5,31 @@ import Register from './components/Register';
 import LogReg from './views/LogReg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/esm/Row';
+import Col from 'react-bootstrap/esm/Col';
 
 function App() {
   return (
     
-    <div className="App .container-fluid">
+    <div className="App">
     
       
-      
+    {/* <Container>
+      <Row>
+        <Col>
+          <Router>
+            <LogReg path="/" />
+            <Login path="/login" />
+
+          </Router>
+        </Col>
+      </Row>
+    </Container> */}
+
         <Router>
           <LogReg path="/" />
-          <Login path="/login" />
+          <Login path="/Login" />
+          <Register path="/Register"/>
 
         </Router>      
 
