@@ -16,7 +16,8 @@ app.use(cookieParser());
 
 require("./config/mongoose.config");
 
-// require("./routes/product.routes")(app);
+require("./routes/part.routes")(app);
+require("./routes/product.routes")(app);
 require("./routes/user.routes")(app);
 
 app.listen(process.env.MY_PORT, () => 

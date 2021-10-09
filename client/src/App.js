@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
+import BuildPC from './components/BuildPC';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <LogReg path="/" />
           <Login path="/Login" />
           <Register path="/Register"/>
+          <BuildPC path="/buildOrder"/>
 
         </Router>      
 

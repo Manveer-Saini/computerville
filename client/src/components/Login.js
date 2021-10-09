@@ -31,7 +31,7 @@ const Login = () => {
             console.log(res.cookie, "cookie");
             console.log(res, "res");
             console.log(res.data, 'is res data!');
-            navigate("/cartoon");
+            navigate("/buildOrder");
         })
         .catch(err => {
             console.log(err.response);
