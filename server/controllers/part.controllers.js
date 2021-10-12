@@ -54,6 +54,40 @@ module.exports = {
                 res.status(400).json(err);
             });
     },
+    // Get all memory parts.
+    getAllStorage: (req, res) => {
+        Part.find({type: "storage"})
+            .then((allStorage) => {
+                console.log(allStorage);
+                res.json(allStorage);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    },
+    getAllColor: (req, res) => {
+        Part.find({type: "color"})
+            .then((allColor) => {
+                console.log(allColor);
+                res.json(allColor);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    },
+    getAllOs: (req, res) => {
+        Part.find({type: "os"})
+            .then((allOs) => {
+                console.log(allOs);
+                res.json(allOs);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    },
 
     createPart: (req, res) => {
         console.log(req.body);

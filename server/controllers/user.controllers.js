@@ -88,5 +88,18 @@ module.exports = {
         res.json({
             message:"You have successfully logged out!"
         })
+    },
+
+    getAllUsers: (req, res)=>{
+        // User.findOne({_id: req.params.id})
+        User.find()
+        .then((oneUser)=>{
+            console.log(oneUser);
+            res.json(oneUser);
+        })    
+        .catch((err)=>{
+            console.log(err);
+            res.status(400).json(err);
+        })
     }
 }

@@ -8,31 +8,18 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 import BuildPC from './components/BuildPC';
+import ReviewOrder from './views/ReviewOrder';
 
 function App() {
   return (
     
     <div className="App">
-    
-      
-    {/* <Container>
-      <Row>
-        <Col>
-          <Router>
-            <LogReg path="/" />
-            <Login path="/login" />
-
-          </Router>
-        </Col>
-      </Row>
-    </Container> */}
-
         <Router>
           <LogReg path="/" />
           <Login path="/Login" />
           <Register path="/Register"/>
           <BuildPC path="/buildOrder"/>
-
+          <ReviewOrder path="/ReviewOrder"/>
         </Router>      
 
       

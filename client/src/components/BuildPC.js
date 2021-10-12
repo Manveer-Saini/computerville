@@ -1,4 +1,3 @@
-
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -15,8 +14,8 @@ var mongoose = require('mongoose');
 const BuildPC = () => {
 
     const [product, setProduct] = useState({
-        color: mongoose.Types.ObjectId(),
-        os: mongoose.Types.ObjectId(),
+        color_id: mongoose.Types.ObjectId(),
+        os_id: mongoose.Types.ObjectId(),
         cpu_id: mongoose.Types.ObjectId(),
         gpu_id: mongoose.Types.ObjectId(),
         memory_id: mongoose.Types.ObjectId(),
@@ -24,46 +23,159 @@ const BuildPC = () => {
     });
     // Todo: Add validation for products
     const [errorMessage, setErrorMessage] = useState("");
-    // Obtain sorted parts from backend.
-    // const [cpuList, setCpuList] = useState([]);
-    // const [gpuList, setGpuList] = useState([]);
-    // const [memoryList, setMemoryList] = useState([]);
-    
 
     const [allParts, setAllParts] = useState([]);
+    const [partsForBuild, setPartsForBuild] = useState({
+        color_id: {},
+        os_id: {},
+        cpu_id: {},
+        gpu_id: {},
+        memory_id: {},
+        storage_id: {}
+    });
     const [sum, setSum] = useState(0);
+    const [allCpu, setAllCpu] = useState([]);
+    const [allGpu, setAllGpu] = useState([]);
+    const [allMemory, setAllMemory] = useState([]);
+    const [allStorage, setAllStorage] = useState([]);
+    const [allColor, setAllColor] = useState([]);
+    const [allOs, setAllOs] = useState([]);
+
+    const [osPrice, setOSPrice] = useState(0);
+    const [gpuPrice, setGpuPrice] = useState(0);
+    const [cpuPrice, setCpuPrice] = useState(0);
+    const [memoryPrice, setMemoryPrice] = useState(0);
+    const [storagePrice, setStoragePrice] = useState(0);
+    const [colorPrice, setColorPrice] = useState(0);
+    const [dummy, setDummy] = useState({});
+    const [completedProduct, setCompletedProduct] = useState({});
+    const [productList, setProductList] = useState([]);
+    
     
     // Get all parts from backend.
     useEffect(() => {
         axios.get('http://localhost:8000/api/parts')
-            .then((res) => {
+            .then(res => {
                 console.log("This is inside the backend call to get all parts", res.data);
                 setAllParts(res.data);
-                // //cpuLand
-                // for(let i = 0; i < allParts.length; i++){
-                //     if(allParts[i].type === "cpu"){
-                //         console.log("I am inside if")
-                //         setCpuList(...cpuList, allParts[i]);
-                //     }
-                // }
-                // for(let i = 0; i < cpuList.length; i++){
-                //     console.log(cpuList[i]);
-                // }
-                
+                // console.log(allParts);
             })
             .catch(err => console.log(err));
     }, []);
-
+      // Get cpu parts from backend.
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/parts/cpu')
+            .then((res) => {
+                console.log("This is inside the backend call to get cpu parts", res.data);
+                setAllCpu(res.data);
+            })
+            .catch(err => console.log(err));
+    }, []);
+      // Get gpu parts from backend.
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/parts/gpu')
+            .then((res) => {
+                console.log("This is inside the backend call to get gpu parts", res.data);
+                setAllGpu(res.data);
+            })
+            .catch(err => console.log(err));
+    }, []);
+      // Get memory parts from backend.
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/parts/memory')
+            .then((res) => {
+                console.log("This is inside the backend call to get memory parts", res.data);
+                setAllMemory(res.data);
+            })
+            .catch(err => console.log(err));
+    }, []);
+      // Get storage parts from backend.
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/parts/storage')
+            .then((res) => {
+                console.log("This is inside the backend call to get storage parts", res.data);
+                setAllStorage(res.data);
+            })
+            .catch(err => console.log(err));
+    }, []);
+      // Get color options from backend.
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/parts/color')
+            .then((res) => {
+                console.log("This is inside the backend call to get color parts", res.data);
+                setAllColor(res.data);
+            })
+            .catch(err => console.log(err));
+    }, []);
+      // Get os options from backend.
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/parts/os')
+            .then((res) => {
+                console.log("This is inside the backend call to get os parts", res.data);
+                setAllOs(res.data);
+                // console.log("This is inside changeHandler to test allOs", res.data);
+                // console.log("This is inside changeHandler to test allOs", allOs.slice(0,1)[0]._id);
+            })
+            .catch(err => {
+                console.log(err)
+                alert("Fails in the os useEffect!");
+            });
+    }, []);
+        // Get completed product from backend.
+            useEffect(() => {
+                
+                    axios.get('http://localhost:8000/api/products')
+                        .then((res) => {
+                            console.log("This is inside the backend call to get products", res.data);
+                            setProductList(res.data);
+                        })
+                        .catch(err => console.log(err));
+            }, [completedProduct]);
+        
+        
+    //TODO: Finish figuring out why product is null giving garbage values!! UNDEFINED
+    // Compute Sum of all parts selected so far.
+    const sumOfAllParts = (e) => {
+        let newStateObject = {...partsForBuild}
+        // console.log("I am inside sumOfAllParts", e.target.name)
+        
+            // console.log(product[key]._id.toString());
+            allParts.map((part) => {
+                // console.log(part._id);
+                console.log(product[e.target.name].toString());
+                // console.log(e.target.name);
+                console.log(product);
+                if(product[e.target.name].toString() === part._id){
+                    newStateObject[e.target.name] = part;
+                    setPartsForBuild(newStateObject);
+                    // console.log(newStateObject);
+                    console.log("These are all the parts to add to the build", partsForBuild)
+                }
+            })
+            let resultPrice = 0;
+            for(const key in partsForBuild){
+                resultPrice += partsForBuild[key].price;
+            }
+            setSum(resultPrice);
+        
+    }
+    // console.log("This is inside changeHandler to test allOs", allOs.slice(0,1)[0]._id);
 
     const changeHandler = (e) => {
         let newStateObject = {...product}
         
         // console.log(e.target.name, e.target.value);
-        console.log("This is the changeHandler:", e.target.value);
+        console.log("This is the changeHandler:", mongoose.Types.ObjectId(e.target.value));
+        // setDummy(e.target.value.name);
+        // console.log(e.target);
         newStateObject[e.target.name] = mongoose.Types.ObjectId(e.target.value);
+        
 
         setProduct(newStateObject);
+        // console.log("This is inside changeHandler to test allOs", allOs.slice(0,1)[0]._id);
+        // sumOfAllParts(e);
     }
+    
     // Build Order by sending product object to backend.
     const submitHandler = (e) =>{
         e.preventDefault();
@@ -73,47 +185,51 @@ const BuildPC = () => {
             withCredentials:true
         })
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 console.log(res.data);
+                setCompletedProduct(res.data);
+                navigate("/ReviewOrder");
+                // setProductList([...productList])
             })
             .catch((err) =>{
+                console.log(product.color_id.toString());
+                alert("Uh oh we have a post error");
                 console.log(err);
-                console.log(err.response.data.errors);
-            })
+                // console.log(err.response.data.errors);
+            })  
     }
-
+    const clickHandler = (e) => {
+        console.log("clicked")
+    }
     return(
         // <div className="page">
             
     <div className="form">
         {/* Container that centers the buildPC form. */}
+        {/* <p>
+            {
+                completedProduct ?
+                // completedProduct[0].color_id.price + completedProduct[0].os_id.price + completedProduct[0].cpu_id.price + completedProduct[0].gpu_id.price + completedProduct[0].memory_id.price + completedProduct[0].storage_id.price:
+                productList[productList.length - 1].color_id.price + productList[productList.length - 1].cpu_id.price :
+                null
+            }
+        </p> */}
         <Container>
             <Row>
                 <Col>
                     <Form onSubmit={submitHandler}>
                         <Row className="mb-3">
-                            {/* <Form.Group as={Col}>
-                                <Form.Label>Operating System</Form.Label>
-                                <Form.Select onChange={(e) => changeHandler(e)} name="os" value={product.os}>
-                                    <option value="RockCandyOS 21.04" defaultValue hidden>
-                                        RockCandyOS 21.04
-                                    </option>
-                                    <option value="RockCandyOS 21.04">RockCandyOS 21.04</option>
-                                    <option value="RockCandyOS 20.10 LTS">RockCandyOS 20.10 LTS</option>
-                                    <option value="Ubuntu">Ubuntu</option>
-                                </Form.Select>
-                            </Form.Group> */}
                             <Form.Group as={Col}>
                                 <Form.Label>OS</Form.Label>
-                                    <Form.Select  onChange={(e) => changeHandler(e)} name="os_id"  value={product.os_id}>
-                                
+                                    <Form.Select onChange={(e) => changeHandler(e)} name="os_id"  value={product.os_id}>
+                                        <option value="" defaultValue>Select an OS.</option>
                                 {
-                                    allParts.map((part, index) => 
-                        
-                                        {
-                                            return (part.type === "os" ?
-                                            <option key={index} value={part._id}>{part.name}</option>
-                                            : null)
+                                    allOs.map((part, index) => 
+                                    
+                                    {
+                                        return (
+                                                <option key={index} value={part._id}>{part.name}</option>
+                                            )
                                         }
                                     )
                                 }
@@ -123,14 +239,14 @@ const BuildPC = () => {
                             <Form.Group as={Col}>
                                 <Form.Label>CPU</Form.Label>
                                     <Form.Select  onChange={(e) => changeHandler(e)} name="cpu_id"  value={product.cpu_id}>
-                                
+                                    <option value="" defaultValue>Select a CPU.</option>
                                 {
-                                    allParts.map((part, index) => 
+                                    allCpu.map((part, index) => 
                         
                                         {
-                                            return (part.type === "cpu" ?
-                                            <option key={index} value={part._id}>{part.name}</option>
-                                            : null)
+                                            return (
+                                                <option key={index} value={part._id}>{part.name}</option>
+                                            )
                                         }
                                     )
                                 }
@@ -141,15 +257,16 @@ const BuildPC = () => {
                             <Form.Group as={Col}>
                                 <Form.Label>GPU</Form.Label>
                                     <Form.Select  onChange={(e) => changeHandler(e)} name="gpu_id"  value={product.gpu_id}>
-                                
+                                    <option value="" defaultValue>Select a GPU.</option>
                                 {
-                                    allParts.map((part, index) => 
+                                    allGpu.map((part, index) => 
                         
-                                        {
-                                            return (part.type === "gpu" ?
-                                            <option key={index} value={part._id}>{part.name}</option>
-                                            : null)
-                                        }
+                                        
+                                            (
+                                                <option onClick={
+                                                    clickHandler} key={index} value={part._id}>{part.name}</option>
+                                            )
+                                        
                                     )
                                 }
                                 </Form.Select>
@@ -157,14 +274,14 @@ const BuildPC = () => {
                             <Form.Group as={Col}>
                                 <Form.Label>Memory</Form.Label>
                                     <Form.Select  onChange={(e) => changeHandler(e)} name="memory_id"  value={product.memory_id}>
-                                
+                                    <option value="" defaultValue>Select a Memory.</option>
                                 {
-                                    allParts.map((part, index) => 
+                                    allMemory.map((part, index) => 
                         
                                         {
-                                            return (part.type === "memory" ?
-                                            <option key={index} value={part._id}>{part.name}</option>
-                                            : null)
+                                            return (
+                                                <option key={index} value={part._id}>{part.name}</option>
+                                            )
                                         }
                                     )
                                 }
@@ -175,14 +292,14 @@ const BuildPC = () => {
                         <Form.Group as={Col}>
                                 <Form.Label>Storage</Form.Label>
                                     <Form.Select onChange={(e) => changeHandler(e)} name="storage_id"  value={product.storage_id}>
-                                
+                                    <option value="" defaultValue>Select a Storage.</option>
                                 {
-                                    allParts.map((part, index) => 
+                                    allStorage.map((part, index) => 
                         
                                         {
-                                            return (part.type === "storage" ?
-                                            <option key={index} value={part._id}>{part.name}</option>
-                                            : null)
+                                            return (
+                                                <option key={index} value={part._id}>{part.name}</option>
+                                            )
                                         }
                                     )
                                 }
@@ -190,16 +307,16 @@ const BuildPC = () => {
                             </Form.Group>
 
                             <Form.Group as={Col}>
-                                <Form.Label>CPU</Form.Label>
+                                <Form.Label>Color</Form.Label>
                                     <Form.Select  onChange={(e) => changeHandler(e)} name="color_id"  value={product.color_id}>
-                                
+                                    <option value="" defaultValue>Select a Color.</option>
                                 {
-                                    allParts.map((part, index) => 
+                                    allColor.map((part, index) => 
                         
                                         {
-                                            return (part.type === "color" ?
-                                            <option key={index} value={part._id}>{part.name}</option>
-                                            : null)
+                                            return (
+                                                <option key={index} value={part._id}>{part.name}</option>
+                                            )
                                         }
                                     )
                                 }
