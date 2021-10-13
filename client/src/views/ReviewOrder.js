@@ -21,16 +21,16 @@ const ReviewOrder = () => {
             .then((res) => {
                 console.log("This is inside the backend call to get products", res.data);
                 setOrder(res.data);
-                grandTotal();
+                grandTotal(res.data[res.data.length - 1]);
             })
             .catch(err => console.log(err));
             }, []);
             
-    const grandTotal = () => {
+    const grandTotal = (newOrder) => {
         let result = 0;
-        console.log(order);
-        if(order){
-            result = order[order.length - 1].color_id.price + order[order.length - 1].os_id.price + order[order.length - 1].cpu_id.price + order[order.length - 1].gpu_id.price + order[order.length - 1].memory_id.price + order[order.length - 1].storage_id.price;
+        console.log(newOrder);
+        if(newOrder){
+            result = newOrder.color_id.price + newOrder.os_id.price + newOrder.cpu_id.price + newOrder.gpu_id.price + newOrder.memory_id.price + newOrder.storage_id.price;
         }
 
         setTotal(result);

@@ -139,41 +139,50 @@ const BuildPC = () => {
         let newStateObject = {...partsForBuild}
         // console.log("I am inside sumOfAllParts", e.target.name)
         
-            // console.log(product[key]._id.toString());
+            // console.log(product[e.target.name]._id.toString());
+            console.log("New target Id " + e.target.value);
+            console.log("New target name " + e.target.name);
+            console.log(product);
             allParts.map((part) => {
                 // console.log(part._id);
-                console.log(product[e.target.name].toString());
+                // console.log(product[e.target.name].toString());
                 // console.log(e.target.name);
-                console.log(product);
-                if(product[e.target.name].toString() === part._id){
+                
+                // if(product[e.target.name].toString() === part._id){
+                if(e.target.value === part._id){
                     newStateObject[e.target.name] = part;
                     setPartsForBuild(newStateObject);
                     // console.log(newStateObject);
-                    console.log("These are all the parts to add to the build", partsForBuild)
+                    console.log("These are all the parts to add to the build", newStateObject)
                 }
             })
             let resultPrice = 0;
-            for(const key in partsForBuild){
-                resultPrice += partsForBuild[key].price;
+            for(const key in newStateObject){
+                if(newStateObject[key].price){
+                    console.log(newStateObject[key].price);
+                    resultPrice += newStateObject[key].price;
+                }
+                
+
             }
             setSum(resultPrice);
+            console.log(resultPrice);
         
     }
-    // console.log("This is inside changeHandler to test allOs", allOs.slice(0,1)[0]._id);
 
     const changeHandler = (e) => {
-        let newStateObject = {...product}
+        let updateProduct = {...product}
         
         // console.log(e.target.name, e.target.value);
-        console.log("This is the changeHandler:", mongoose.Types.ObjectId(e.target.value));
+        console.log("This is the changeHandler:", mongoose.Types.ObjectId(e.target.value).toString());
         // setDummy(e.target.value.name);
         // console.log(e.target);
-        newStateObject[e.target.name] = mongoose.Types.ObjectId(e.target.value);
+        updateProduct[e.target.name] = mongoose.Types.ObjectId(e.target.value);
         
 
-        setProduct(newStateObject);
-        // console.log("This is inside changeHandler to test allOs", allOs.slice(0,1)[0]._id);
-        // sumOfAllParts(e);
+        setProduct(updateProduct);
+        
+        sumOfAllParts(e);
     }
     
     // Build Order by sending product object to backend.
@@ -187,7 +196,7 @@ const BuildPC = () => {
             .then((res) => {
                 // console.log(res);
                 console.log(res.data);
-                setCompletedProduct(res.data);
+                // setCompletedProduct(res.data);
                 navigate("/ReviewOrder");
                 // setProductList([...productList])
             })
@@ -323,6 +332,7 @@ const BuildPC = () => {
                                 </Form.Select>
                             </Form.Group>
                         </Row>
+                            <h3>{sum}</h3>
                             <div className="center">
                                 <Button type="submit" variant="primary" size="lg">Add To Order</Button>
                             </div>
